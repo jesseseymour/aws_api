@@ -1,27 +1,15 @@
+var app = require('../app');
 var express = require('express');
 var router = express.Router();
-var aws = require('../node_modules/aws-lib/lib/aws');
-
-
-/* Call aws api */
-prodAdv = aws.createProdAdvClient('AKIAIINBSKK365ZUFIKA', 'PrMDVoocsdXAmKbjIzWIoMbkDPHFPhbz6cZ7FyJK', 'catapulttest-20');
-
-prodAdv.call("ItemSearch", {SearchIndex: "Books", Keywords: "Javascript"}, function(err, result) {
-  awsjson = JSON.stringify(result);
-})
+var amazon = require('../controllers/amazonController');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { 
-  	title: 'AWS API Test'/*,
-  	aws_output: awsjson*/
-  });
+router.get('/', function(req, res){
+	amazon.addToCart();
+	res.send("hello world")
 });
 
-// router.get('/form', function(req, res, next) {
-// 	res.render('form', {
 
-// 	})
-// });
+
 
 module.exports = router;
