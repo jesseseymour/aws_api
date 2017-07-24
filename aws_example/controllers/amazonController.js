@@ -15,6 +15,11 @@ exports.addToCart = function(req, res) {
 }
 //amazonModel.cartCreate(getItemsObj(items));
 
+
+function doesCartExist(){
+
+}
+
 function getItemsObj(items){
 	var obj = {};
 	for (var i in items) {
