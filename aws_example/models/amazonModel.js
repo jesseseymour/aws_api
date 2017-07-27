@@ -12,7 +12,7 @@ function Amazon() {
 
 //call api to get one item by ASIN
 Amazon.prototype.getItems = function(items, cb) {
-	awsapi.call("ItemLookup", {ItemId: items}, function(err, result) {
+	awsapi.call("ItemLookup", {ItemId: items, ResponseGroup: 'Small, Images'}, function(err, result) {
 		cb.call(result);
 	}.bind(this));
 }
