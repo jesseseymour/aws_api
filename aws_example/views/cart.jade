@@ -17,6 +17,8 @@ block content
             input(type="hidden", name="cartitemid", value="#{item.CartItemId}")
             p item total #{item.ItemTotal.FormattedPrice}
             input(type="submit", value="update")
+    p
+      a(href= link, target="_blank") Purchase on Amazon
   if item
     ul
       li
@@ -27,8 +29,8 @@ block content
           input(type="hidden", name="cartitemid", value="#{item.CartItemId}")
           p item total #{item.ItemTotal.FormattedPrice}
           input(type="submit", value="update")
-  p
-    a(href= link, target="_blank") Purchase on Amazon
+    p
+      a(href= link, target="_blank") Purchase on Amazon
   
 
   script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
