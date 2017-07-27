@@ -6,11 +6,51 @@ var awsapi = aws.createProdAdvClient('AKIAIINBSKK365ZUFIKA', 'PrMDVoocsdXAmKbjIz
 //B016ZPB7QE
 //B0029NR4LO
 
-//create cart with items array
+function Amazon() {
+	this.itemsArr = [];
+}
 
-exports.cartCreate = function(items, cb) {
-	awsapi.call("CartCreate", items, function(err, result) {
-		
+//call api to get one item by ASIN
+Amazon.prototype.getItems = function(items, cb) {
+	awsapi.call("ItemLookup", {ItemId: items}, function(err, result) {
+		cb.call(result);
+	}.bind(this));
+}
+
+//create cart
+Amazon.prototype.createCart = function(asin, quantity, cb) {
+	quantity = quantity || 1;
+	awsapi.call("CartCreate",
+	{
+		'Item.1.ASIN': asin,
+		'Item.1.Quantity': quantity
+	},
+	function(err, result){
+		cb.call(result);
 	})
 }
 
+//get cart
+Amazon.prototype.getCart = function(id, hmac, cb) {
+	awsapi.call("CartGet", {CartId: id, HMAC: hmac}, function(err, result) {
+		cb.call(result);
+	})
+}
+
+//add to cart
+Amazon.prototype.cartAdd = function(asin, quantity, id, hmac, cb) {
+	quantity = quantity || 1;
+	awsapi.call("CartAdd", 
+		{
+			'Item.1.ASIN': asin, 
+			'Item.1.Quantity': quantity,
+			AssociateTag: 'catapulttest-20', 
+			CartId: id,
+			HMAC: hmac
+		},
+		function(err, result){
+			cb.call(result);
+		})
+}
+
+module.exports = Amazon;

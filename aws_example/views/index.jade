@@ -2,6 +2,13 @@ extends layout
 
 block content
   h1 AWS API
+  ul
+    for item in items
+      li #{item.ItemAttributes.Title}
+        br
+        form(action="/add", method="POST")
+          input(type="hidden", value="#{item.ASIN}", name="asin")
+          input(type="submit", value="add to cart")
   
 
   script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
