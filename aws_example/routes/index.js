@@ -18,6 +18,9 @@ router.post('/add', amazon.addToCart);
 /* get cart page */
 router.get('/cart', amazon.showCart);
 
+/* update cart page */
+router.post('/update', amazon.updateCart);
+
 /*if (req.cookies.cartId) {
   //amazon.getCart();
   res.send("has cart");

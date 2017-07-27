@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1 AWS API
+  p
+    a(href="/cart") View Cart
   ul
     for item in items
       li #{item.ItemAttributes.Title}

@@ -20,18 +20,6 @@ var items = [{asin: 'B00008GKAV', quantity:2},{asin: 'B016ZPB7QE', quantity:1}]
 
 
 
-
-
-// exports.getCart = function(req, res) {
-// 	if (req.cookie.cartId) {
-// 		res.send("has cart");
-// 	} else {
-// 		res.send("no cart");
-// 	}
-// 	res.send("has cart");
-// }
-
-
 //list items for sale
 exports.listItems = function(req, res) {
 	//example items list
@@ -73,6 +61,53 @@ exports.addToCart = function(req, res) {
 	});
 }
 
+//display list of items in cart
+exports.showCart = function(req, res) {
+	var cartId = req.cookies.cartId;
+	var cartHmac = req.cookies.cartHmac;
+
+	//check for valid cart
+	var cart = doesCartExist(cartId, cartHmac, function(){
+		if (this == 'True') {
+			aws.getCart(cartId, cartHmac, function() {
+
+				//return one item or list of items
+				if (Object.prototype.toString.call(this.Cart.CartItems.CartItem) === '[object Array]') {
+					res.render('cart', {items: this.Cart.CartItems.CartItem, link: this.Cart.PurchaseURL})
+				} else {
+					res.render('cart', {item: this.Cart.CartItems.CartItem, link: this.Cart.PurchaseURL})
+				}
+
+				
+			})
+		} else {
+			res.render('cart', {msg: "Your shopping cart is empty."});
+		}
+	})
+	//res.send("cart page");
+}
+
+//update cart
+exports.updateCart = function(req, res) {
+	var cartId = req.cookies.cartId;
+	var cartHmac = req.cookies.cartHmac;
+	var itemId = req.body.cartitemid;
+	var quantity = req.body.quantity;
+
+
+	//check for valid cart
+	var cart = doesCartExist(cartId, cartHmac, function(){
+		if (this == 'True') {
+			aws.modifyCart(cartId, cartHmac, itemId, quantity, function() {
+				res.redirect('/cart');
+			})
+		} else {
+			res.redirect('/');
+		}
+	})
+}
+
+
 //check if cart exists using user cookies and is valid
 var doesCartExist = function(id,hmac,cb) {
 	var cart = aws.getCart(id, hmac, function(){
@@ -86,9 +121,7 @@ var doesCartExist = function(id,hmac,cb) {
 	});
 }
 
-exports.showCart = function(req, res) {
-	res.send("cart page");
-}
+
 
 function getItemsObj(items){
 	var obj = {};

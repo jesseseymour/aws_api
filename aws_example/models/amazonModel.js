@@ -53,4 +53,18 @@ Amazon.prototype.cartAdd = function(asin, quantity, id, hmac, cb) {
 		})
 }
 
+//modify cart
+Amazon.prototype.modifyCart = function(cartId, cartHmac, itemId, quantity, cb) {
+	awsapi.call("CartModify", 
+		{
+			CartId: cartId,
+			HMAC: cartHmac,
+			'Item.1.CartItemId': itemId,
+			'Item.1.Quantity': quantity
+			},
+			function(err, result){
+				cb();
+			})
+}
+
 module.exports = Amazon;

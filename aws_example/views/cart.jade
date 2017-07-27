@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1 AWS API
+  if msg
+    p= msg
+  p
+    a(href="/") Continue Shopping
+  if items
+    ul
+      for item in items
+        li
+          form(method="POST", action="/update") 
+            p #{item.Title}
+            p price #{item.Price.FormattedPrice}
+            p quantity #[input(type="number", name="quantity", value="#{item.Quantity}")]
+            input(type="hidden", name="cartitemid", value="#{item.CartItemId}")
+            p item total #{item.ItemTotal.FormattedPrice}
+            input(type="submit", value="update")
+  if item
+    ul
+      li
+        form(method="POST", action="/update") 
+          p #{item.Title}
+          p price #{item.Price.FormattedPrice}
+          p quantity #[input(type="number", name="quantity", value="#{item.Quantity}")]
+          input(type="hidden", name="cartitemid", value="#{item.CartItemId}")
+          p item total #{item.ItemTotal.FormattedPrice}
+          input(type="submit", value="update")
+  p
+    a(href= link, target="_blank") Purchase on Amazon
+  
+
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
+  script(src="/javascripts/main.js")
